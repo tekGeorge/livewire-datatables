@@ -393,10 +393,18 @@ class LivewireDatatable extends Component
                         return null;
                     }
                     if ($column->select instanceof Expression) {
-                        $sep_string = config('database.default') === 'pgsql' ? '"' : '`';
-                        //TODO: We can't have one database type for mulitiple database connections.  Mysql nor sqlsrv require the seperator so disable for now.
-                        //return new Expression($column->select->getValue() . ' AS ' . $sep_string . $column->name . $sep_string);
-                        return new Expression($column->select->getValue() . ' AS ' .$column->name );
+                        //dd($this->model::query()->getConnection()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME));
+
+                        switch ($this->model::query()->getConnection()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
+
+                            case 'sqllite':
+                                return new Expression($column->select->getValue() . ' AS ' . "`" . $column->name . "`");
+                                break;
+                            default:
+                                return new Expression($column->select->getValue() . ' AS ' .$column->name );
+                                break;
+
+                        }
                     }
 
                     if (is_array($column->select)) {

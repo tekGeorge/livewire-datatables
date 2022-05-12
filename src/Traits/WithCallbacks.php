@@ -9,7 +9,7 @@ trait WithCallbacks
 {
     public function edited($value, $key, $column, $rowId)
     {
-        DB::table(Str::before($key, '.'))
+        DB::connection($this->model::query()->getConnection()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME))->table(Str::before($key, '.'))
             ->where(Str::after($key, '.'), $rowId)
             ->update([$column => $value]);
 
