@@ -393,17 +393,13 @@ class LivewireDatatable extends Component
                         return null;
                     }
                     if ($column->select instanceof Expression) {
-                        //dd($this->model::query()->getConnection()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME));
-
                         switch ($this->model::query()->getConnection()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
-
                             case 'sqllite':
                                 return new Expression($column->select->getValue() . ' AS ' . "`" . $column->name . "`");
                                 break;
                             default:
                                 return new Expression($column->select->getValue() . ' AS ' .$column->name );
                                 break;
-
                         }
                     }
 
