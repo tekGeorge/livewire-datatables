@@ -394,7 +394,7 @@ class LivewireDatatable extends Component
                     }
                     if ($column->select instanceof Expression) {
                         $sep_string = config('database.default') === 'pgsql' ? '"' : '`';
-                        TODO://We can't have one database type for mulitiple database connections.  Mysql nor sqlsrv require the seperator so disable for now.
+                        //TODO: We can't have one database type for mulitiple database connections.  Mysql nor sqlsrv require the seperator so disable for now.
                         //return new Expression($column->select->getValue() . ' AS ' . $sep_string . $column->name . $sep_string);
                         return new Expression($column->select->getValue() . ' AS ' .$column->name );
                     }
