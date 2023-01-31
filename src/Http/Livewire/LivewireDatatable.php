@@ -1408,23 +1408,10 @@ class LivewireDatatable extends Component
                 if (! ((isset($filter['start']) && $filter['start'] != '') || (isset($filter['end']) && $filter['end'] != ''))) {
                     break;
                 }
-                if (isset($filter['start']) && $filter['start'] != ''){
-                    $dateArr = explode("-",$filter['start']);
-
-                    $timeStart = $dateArr[1]."-".$dateArr[2]."-".$dateArr[0];//m-d-y
-                }else{
-                    $timeStart = config('livewire-datatables.default_time_start', '00-00-0000');
-                }
-
-                if (isset($filter['end']) && $filter['end'] != '' ){
-                    $dateArr = explode("-",$filter['end']);
-
-                    $timeEnd = $dateArr[1]."-".$dateArr[2]."-".$dateArr[0];//m-d-y
-                }else{
-                    $timeEnd = config('livewire-datatables.default_time_end', '12-31-9999');
-                }
-
-                $query->whereBetween($this->getColumnFilterStatement($index)[0], [$timeStart,$timeEnd]);
+                $query->whereBetween($this->getColumnFilterStatement($index)[0], [
+                    isset($filter['start']) && $filter['start'] != '' ? $filter['start'] : config('livewire-datatables.default_time_start', '0000-00-00'),
+                    isset($filter['end']) && $filter['end'] != '' ? $filter['end'] : config('livewire-datatables.default_time_end', '9999-12-31'),
+                ]);
             }
         });
 
