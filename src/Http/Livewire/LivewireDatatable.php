@@ -1411,17 +1411,30 @@ class LivewireDatatable extends Component
                 if (isset($filter['start']) && $filter['start'] != ''){
                     $dateArr = explode("-",$filter['start']);
 
+                    if ($dateArr[0] < "1900"){
+                        $dateArr[0] = "1900";
+                    }else if($dateArr[0] > "2078"){
+                        $dateArr[0] = "2078";
+                    }
+
                     $timeStart = $dateArr[1]."-".$dateArr[2]."-".$dateArr[0];//m-d-y
                 }else{
-                    $timeStart = '1900-01-01';
+                    $timeStart = '01-01-1900';
                 }
 
                 if (isset($filter['end']) && $filter['end'] != '' ){
                     $dateArr = explode("-",$filter['end']);
 
+                    if ($dateArr[0] < "1900"){
+                        $dateArr[0] = "1900";
+                    }else if($dateArr[0] > "2078"){
+                        $dateArr[0] = "2078";
+                    }
+
                     $timeEnd = $dateArr[1]."-".$dateArr[2]."-".$dateArr[0];//m-d-y
+
                 }else{
-                    $timeEnd = '2079-06-06';
+                    $timeEnd = '06-06-2079';
                 }
 
                 $query->whereBetween($this->getColumnFilterStatement($index)[0], [$timeStart,$timeEnd]);
