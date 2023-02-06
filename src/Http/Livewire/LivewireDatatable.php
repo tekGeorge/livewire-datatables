@@ -19,8 +19,6 @@ use Mediconesystems\LivewireDatatables\Exports\DatatableExport;
 use Mediconesystems\LivewireDatatables\Traits\WithCallbacks;
 use Mediconesystems\LivewireDatatables\Traits\WithPresetDateFilters;
 use Mediconesystems\LivewireDatatables\Traits\WithPresetTimeFilters;
-//renardudezert fix
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class LivewireDatatable extends Component
 {
@@ -923,8 +921,6 @@ class LivewireDatatable extends Component
     {
         if (isset($key)) {
             unset($this->activeTextFilters[$column][$key]);
-
-            
             if (count($this->activeTextFilters[$column]) < 1) {
                 unset($this->activeTextFilters[$column]);
             }
@@ -1044,20 +1040,8 @@ class LivewireDatatable extends Component
     {
         $this->row = 1;
 
-        //renardudezert fix
-        $perPage = ($this->getQuery()->limit && ($this->getQuery()->limit < $this->perPage)) ? $this->getQuery()->limit : $this->perPage;
-        $paginatedQuery = $this->getQuery()->paginate($perPage);
-        $total = ($this->getQuery()->limit) ?: $paginatedQuery->total();
-        $paginatedQuery = new LengthAwarePaginator(
-            $paginatedQuery->items(),
-            $paginatedQuery->total() < $total ? $paginatedQuery->total() : $total,
-            $this->perPage,
-            $paginatedQuery->currentPage(),
-            $paginatedQuery->getOptions()
-        );
-
         return $this->mapCallbacks(
-            $paginatedQuery
+            $this->getQuery()->paginate($this->perPage)
         );
     }
 
@@ -1660,16 +1644,14 @@ class LivewireDatatable extends Component
 
     public function checkboxQuery()
     {
-        //renardudezert fix
-        return $this->query->get()->map(function ($row) {
+        return $this->query->reorder()->get()->map(function ($row) {
             return (string) $row->checkbox_attribute;
         });
     }
 
     public function toggleSelectAll()
     {
-        //renardudezert fix
-        if (count($this->selected) === ($this->getQuery()->limit ?: $this->getQuery()->getCountForPagination())) {
+        if (count($this->selected) === $this->getQuery()->getCountForPagination()) {
             $this->selected = [];
         } else {
             $this->selected = $this->checkboxQuery()->values()->toArray();
