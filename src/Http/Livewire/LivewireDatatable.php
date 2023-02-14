@@ -1186,7 +1186,18 @@ class LivewireDatatable extends Component
                         if ($this->columnIsAggregateRelation($this->freshColumns[$rule['content']['column']])) {
                             $query = $this->addAggregateFilter($query, $rule['content']['column'], $this->complexValue($rule), $this->complexOperator($rule['content']['operand']));
                         } else {
-                            foreach ($this->getColumnFilterStatement($rule['content']['column']) as $column) {
+                            $ruleList = [];
+
+                            $columnsTemp = $this->getColumnFilterStatement($rule['content']['column']);
+
+                            if(is_string($columnsTemp)){
+                                $ruleList.array_push($columnsTemp);
+                            }else{
+                                $ruleList = $columnsTemp;
+                            }
+
+
+                            foreach ($ruleList as $column) {
                                 if ($rule['content']['operand'] === 'is empty') {
                                     $query->whereNull($column);
                                 } elseif ($rule['content']['operand'] === 'is not empty') {
