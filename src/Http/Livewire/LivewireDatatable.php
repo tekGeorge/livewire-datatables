@@ -1191,7 +1191,7 @@ class LivewireDatatable extends Component
                             $columnsTemp = $this->getColumnFilterStatement($rule['content']['column']);
 
                             if(is_string($columnsTemp)){
-                                $ruleList.array_push($columnsTemp);
+                                array_push($ruleList, $columnsTemp);
                             }else{
                                 $ruleList = $columnsTemp;
                             }
