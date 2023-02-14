@@ -111,7 +111,7 @@ class LivewireDatatablesServiceProvider extends ServiceProvider
                 if (count($query->columns) > 1) {
                     $query->columns = [$query->columns[0]];
                 }
-                $columnAlias = new Expression("'" . ($alias ?? collect([$relations, $column])->filter()->flatten()->join('.')) . "'");
+                $columnAlias = new Expression("[" . ($alias ?? collect([$relations, $column])->filter()->flatten()->join('.')) . "]");
                 $this->selectSub($query, $columnAlias);
             }
 
