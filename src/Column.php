@@ -143,7 +143,7 @@ class Column
         $column->scope = $scope;
         $column->name = $alias;
         $column->label = $alias;
-        $column->sortBy("`$alias`");
+        $column->sortBy("'$alias'");
 
         return $column;
     }
