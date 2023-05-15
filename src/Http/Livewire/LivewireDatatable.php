@@ -1247,6 +1247,8 @@ class LivewireDatatable extends Component
             }
         });
 
+        $this->page = 1;
+
         return $this;
     }
 
