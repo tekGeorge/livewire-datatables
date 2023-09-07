@@ -921,7 +921,7 @@ class LivewireDatatable extends Component
     {
         if (isset($key)) {
             unset($this->activeTextFilters[$column][$key]);
-            if (count($this->activeTextFilters[$column]) < 1) {
+            if (!isset($this->activeTextFilters[$column]) or count($this->activeTextFilters[$column]) < 1) {
                 unset($this->activeTextFilters[$column]);
             }
         } else {
