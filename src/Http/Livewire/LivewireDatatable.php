@@ -1350,7 +1350,7 @@ class LivewireDatatable extends Component
             foreach ($this->activeTextFilters as $index => $activeTextFilter) {
                 $query->where(function ($query) use ($index, $activeTextFilter) {
                     foreach ($activeTextFilter as $value) {
-                        if ($this->columnIsRelation($this->freshColumns[$index])) {
+                        if (isset($this->freshColumns[$index]) && $this->columnIsRelation($this->freshColumns[$index])) {
                             $this->addAggregateFilter($query, $index, $activeTextFilter);
                         } else {
                             $query->orWhere(function ($query) use ($index, $value) {
